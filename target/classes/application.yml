@@ -1,0 +1,79 @@
+server:
+  port: 8081
+
+# DataSource Config
+spring:
+  application:
+    name: gage_crud
+
+#   事务管理器唯一标识符
+  jta:
+    transaction-manager-id: txManager
+
+  datasource:
+    # Druid连接池配置。spring-boot-2默认连接池hikari不支持MysqlXADataSource
+    type: com.alibaba.druid.pool.xa.DruidXADataSource
+    # 最小空闲连接
+    min-pool-size: 5
+    # 池中最大连接数
+    max-pool-size: 20
+    # 设置连接在池中被自动销毁之前保留的最大秒数。 可选，默认为0（无限制）。
+    max-life-time: 60
+    # 返回连接前用于测试连接的SQL查询
+    test-query: SELECT 1
+    # 多数据源配置
+    db1:
+      driver-class-name: org.h2.Driver
+      schema: classpath:db1/schema-h2.sql
+      data: classpath:db1/data-h2.sql
+      url: jdbc:h2:mem:test_db1
+      username: root
+      password: test
+    db2:
+      driver-class-name: org.h2.Driver
+      schema: classpath:db2/schema-h2.sql
+      data: classpath:db2/data-h2.sql
+      url: jdbc:h2:mem:test_db2
+      username: root
+      password: test
+
+    #    type: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: org.h2.Driver
+#      schema: classpath:db2/schema-h2.sql
+#      data: classpath:db2/data-h2.sql
+#      url: jdbc:h2:mem:test_db2
+#      username: root
+#      password: test
+#    url:
+#    hikari:
+#      connection-timeout: 30000 # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 默认:30秒
+#      minimum-idle: 10
+#      maximum-pool-size: 100
+#      auto-commit: true
+#      idle-timeout: 600000 # 一个连接idle状态的最大时长（毫秒），超时则被释放（retired），默认:10分钟
+#      max-lifetime: 28000000 # 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），默认:30分钟 1800000ms，建议设置比数据库超时时长少60秒，参考MySQL wait_timeout参数（show variables like '%timeout%';） -->
+#      connection-test-query: SELECT 1
+#      validation-timeout: 3000
+#  h2:
+#    console:
+#      enabled: true
+#      settings:
+#        # 开启h2 console 跟踪 方便调试  默认 false
+#        trace: true
+#        # 允许console 远程访问 默认false
+#        web-allow-others: true
+#        path: /h2Console
+
+
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+    local-cache-scope: statement
+  global-config:
+    banner: false
+
+
+# Logger Config
+logging:
+  level:
+    com.baomidou.mybatisplus.samples.quickstart: debug
